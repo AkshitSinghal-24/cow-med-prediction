@@ -5,11 +5,10 @@ import joblib
 import pandas as pd
 
 # Load artifacts
-model = joblib.load("cow_medicine_model.pkl")
-label_encoder = joblib.load("label_encoder.pkl")
-feature_columns = joblib.load("feature_columns.pkl")
-unique_breeds = joblib.load("unique_breeds.pkl")
-unique_diagnoses = joblib.load("unique_diagnoses.pkl")
+model = joblib.load("cow_medicine_model2.pkl")
+label_encoder = joblib.load("label_encoder2.pkl")
+feature_columns = joblib.load("feature_columns2.pkl")
+unique_diagnoses = joblib.load("unique_diagnoses2.pkl")
 
 app = FastAPI(title="Cow Medicine Predictor API")
 
@@ -27,10 +26,6 @@ class CowData(BaseModel):
 def predict_medicine(data: CowData):
     input_base = data.dict()
     diagnosis_list = input_base.pop("diagnosis")
-
-    # Validate breed
-    if input_base["breed"] not in unique_breeds:
-        raise HTTPException(status_code=400, detail=f"Unknown breed: {input_base['breed']}")
 
     # Validate all diagnoses
     invalid_diagnoses = [d for d in diagnosis_list if d not in unique_diagnoses]
